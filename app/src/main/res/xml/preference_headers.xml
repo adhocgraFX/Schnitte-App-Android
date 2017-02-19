@@ -1,0 +1,10 @@
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
+    <header
+        android:fragment="de.adhocgrafx.probe2.DefaultPreferenceFragment"
+        android:summary="Listeneinträge für Klassen, Kurse, Schuljahre und Semester"
+        android:title="Allgemeine Einstellungen">
+        <extra
+            android:name="fragprefresource"
+            android:value="preference_cluster_1" />
+    </header>
+</preference-headers>

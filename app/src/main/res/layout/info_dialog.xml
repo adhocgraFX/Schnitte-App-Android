@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="?dialogPreferredPadding"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/row0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp">
+
+            <TextView
+                android:id="@+id/lblInfo0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:width="100dp"
+                android:text=" "
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/txtInfo0"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text=" "
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/row1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp">
+
+            <TextView
+                android:id="@+id/lblInfo1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:width="100dp"
+                android:text=" "
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/txtInfo1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text=" "
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/row2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp">
+
+            <TextView
+                android:id="@+id/lblInfo2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:width="100dp"
+                android:text=" "
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/txtInfo2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text=" "
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

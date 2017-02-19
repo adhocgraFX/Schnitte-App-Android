@@ -1,0 +1,18 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Listeneinträge">
+        <EditTextPreference
+            android:defaultValue="1ku1,1ku2,1ku3,2ku1,2ku2,2ku3"
+            android:dialogTitle="Klassen- und Kursnamen; durch Kommata getrennt."
+            android:key="kurse"
+            android:summary="Hier können die Listen für Klassen- und Kursnamen bearbeitet werden. Geben Sie die Listeneinträge jeweils durch Kommata getrennt ein."
+            android:title="Klassen und Kurse" />
+
+        <EditTextPreference
+            android:defaultValue="11/1,11/2,12/1,12/2,2016/17"
+            android:dialogTitle="Schuljahre und Semester; durch Kommata getrennt."
+            android:key="semester"
+            android:summary="Hier können die Listen für Schuljahre und Semester bearbeitet werden. Geben Sie die Listeneinträge jeweils durch Kommata getrennt ein."
+            android:title="Schuljahre und Semester" />
+    </PreferenceCategory>
+</PreferenceScreen>

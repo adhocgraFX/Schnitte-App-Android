@@ -1,0 +1,73 @@
+<resources>
+    <string name="app_name">Schnitte</string>
+    <string name="action_info">Über Schnitte</string>
+    <string name="change_preferences">Einstellungen</string>
+    <string name="errorText">Geben Sie zuerst Zahlenwerte ein.</string>
+    <string name="dialog_info">Version 1.06 \nCopyright © 2016/17
+        \nJohannes Hock \nErnst-Kreußling-Str. 17 \n97437 Haßfurt \nDeutschland</string>
+    <string name="dialog_mail">mail: info@adhocgrafx.de</string>
+    <string name="dialog_web">Web: www.adhocgrafx.de</string>
+
+    <string name="berechnen">BERECHNEN</string>
+    <string name="reset">RESET</string>
+    <string name="cancel">ABBRECHEN</string>
+    <string name="speichern">SPEICHERN</string>
+    <string name="datum">DATUM</string>
+    <string name="ok">OK</string>
+    <string name="delete">LÖSCHEN</string>
+    <string name="delete_message">Wollen Sie die Prüfung wirklich löschen?</string>
+    <string name="delete_title">Prüfung löschen</string>
+    <string name="editInfo">INFO</string>
+    <string name="editSchnitt">SCHNITT</string>
+
+    <string name="Noten">NOTEN</string>
+    <string name="Punkte">PUNKTE</string>
+    <string name="Ergebnisse">ERGEBNISSE</string>
+    <string name="Bearbeiten">BEARBEITEN</string>
+
+    <string name="ergebnis">Ergebnis</string>
+    <string name="add_klausur_title">Neue Prüfung</string>
+    <string name="edit_klausur_title">Prüfung bearbeiten</string>
+    <string name="schuljahre_semester">Liste der Schuljahre und Semester:</string>
+    <string name="klassen_kurse">Liste der Klassen und Kurse:</string>
+    <string name="schnitte_logo">Schnitte Logo</string>
+
+    <string name="n1">N1</string>
+    <string name="n2">N2</string>
+    <string name="n3">N3</string>
+    <string name="n4">N4</string>
+    <string name="n5">N5</string>
+    <string name="n6">N6</string>
+    <string name="p0">P0</string>
+    <string name="p1">P1</string>
+    <string name="p10">P10</string>
+    <string name="p11">P11</string>
+    <string name="p12">P12</string>
+    <string name="p13">P13</string>
+    <string name="p14">P14</string>
+    <string name="p15">P15</string>
+    <string name="p2">P2</string>
+    <string name="p3">P3</string>
+    <string name="p4">P4</string>
+    <string name="p5">P5</string>
+    <string name="p6">P6</string>
+    <string name="p7">P7</string>
+    <string name="p8">P8</string>
+    <string name="p9">P9</string>
+
+    <string-array name="kurs_array">
+        <item>1ku1</item>
+        <item>1ku2</item>
+        <item>1ku3</item>
+        <item>2ku1</item>
+        <item>2ku2</item>
+        <item>2ku3</item>
+    </string-array>
+
+    <string-array name="semester_array">
+        <item>11/1</item>
+        <item>11/2</item>
+        <item>12/1</item>
+        <item>12/2</item>
+    </string-array>
+</resources>

@@ -43,10 +43,10 @@ public class ErgebnisseFragment extends ListFragment {
     public Klausur tempklausur = new Klausur();
     public boolean gespeichert;
 
-
     static final int INFO_ID = 0;
-    static final int EDIT_ID = 1;
-    static final int DELETE_ID = 2;
+    static final int EDIT_INFO_ID = 1;
+    static final int EDIT_SCHNITT_ID = 2;
+    static final int DELETE_ID = 3;
 
     public ErgebnisseFragment() {
         // Required empty public constructor
@@ -108,8 +108,9 @@ public class ErgebnisseFragment extends ListFragment {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        menu.add(0, INFO_ID, 0, "Informationen");
-        menu.add(0, EDIT_ID, 0, "Bearbeiten");
+        menu.add(0, INFO_ID, 0, "Überblick");
+        menu.add(0, EDIT_INFO_ID, 0, "Info Bearbeiten");
+        menu.add(0, EDIT_SCHNITT_ID, 0, "Schnitt Bearbeiten");
         menu.add(0, DELETE_ID, 0, "Löschen");
     }
 
@@ -127,8 +128,12 @@ public class ErgebnisseFragment extends ListFragment {
                 showInfo((int) info.id);
                 return true;
 
-            case EDIT_ID:
+            case EDIT_INFO_ID:
                 updateKlausur((int) info.id);
+                return true;
+
+            case EDIT_SCHNITT_ID:
+                updateSchnitt((int) info.id);
                 return true;
 
             case DELETE_ID:
@@ -156,6 +161,7 @@ public class ErgebnisseFragment extends ListFragment {
                         // cancel
                     }
                 });
+
                 AlertDialog dialog = builder.create();
 
                 dialog.show();
@@ -285,7 +291,7 @@ public class ErgebnisseFragment extends ListFragment {
                             public void onClick(DialogInterface dialog,
                                                 int whichButton) {
 
-                                gespeichert = updateKlausur(editWrapper, position);
+                                gespeichert = updateKlausurData(editWrapper, position);
 
                                 if (!gespeichert) {
                                     // toasten
@@ -316,7 +322,7 @@ public class ErgebnisseFragment extends ListFragment {
                 .show();
     }
 
-    public boolean updateKlausur(DialogWrapper wrapper, int position) {
+    public boolean updateKlausurData(DialogWrapper wrapper, int position) {
 
         // values einlesen
         myValues = new ContentValues();
@@ -342,6 +348,13 @@ public class ErgebnisseFragment extends ListFragment {
         return gespeichert;
     }
 
-    // delet dialog
+    // update Schnitt dialog
+    private void updateSchnitt(final int position) {
 
+    }
+
+    public boolean updateSchnittData(DialogWrapper wrapper, int position) {
+
+        return gespeichert;
+    }
 }

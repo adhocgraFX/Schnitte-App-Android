@@ -7,7 +7,9 @@ import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -72,8 +74,25 @@ public class ErgebnisseFragment extends ListFragment {
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        // todo ? nötig ?
+        displayKlausuren();
+    }
+
+    @Override
     public void onListItemClick(ListView l, View v, final int position, long id) {
 
+        final Context helpContext = getActivity();
+
+        // kleiner hilfetext als toast, via preferences abstellbar
+        SharedPreferences myPrefs = PreferenceManager.getDefaultSharedPreferences(helpContext);
+        Boolean hilfe = myPrefs.getBoolean("switch", true);
+        if (hilfe) {
+            CharSequence text = "Informationen, Bearbeiten und Löschen werden als Kontextmenü angezeigt >> Listeneinträge länger antippen.";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(helpContext, text, duration);
+            toast.show();
+        }
     }
 
     public void displayKlausuren() {

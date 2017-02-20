@@ -103,34 +103,88 @@ public class MainActivity extends AppCompatActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        // TODO was dann nehmen?
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
 
-                //Toast.makeText(MainActivity.this, "tabSelected:  " + tab.getText(), Toast.LENGTH_SHORT).show();
-
                 mViewPager.setCurrentItem(tab.getPosition());
+
+                switch (tab.getPosition()) {
+                    case 0:
+                        // allgemeiner reset
+                        punkteInstanziieren();
+                        notenInstanziieren();
+
+                        // punkte-anzahlen zu noten-anzahlen
+                        notenSynchronisieren();
+
+                        // reset der eingabefelder
+                        resetInputNoten();
+                    case 1:
+                        // allgemeiner reset
+                        punkteInstanziieren();
+                        notenInstanziieren();
+
+                        // punkte-anzahlen zu noten-anzahlen
+                        notenSynchronisieren();
+
+                        // reset der eingabefelder
+                        resetInputPunkte();
+                    case 2:
+                        // todo liste aktualisieren
+
+                }
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
+
+                switch (tab.getPosition()) {
+                    case 0:
+
+                    case 1:
+
+                    case 2:
+
+                }
 
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
-                //Toast.makeText(MainActivity.this, "tabReSelected:  " + tab.getText(), Toast.LENGTH_SHORT).show();
-                // TODO list view hier aktualisieren
+                switch (tab.getPosition()) {
+                    case 0:
+                        // allgemeiner reset
+                        punkteInstanziieren();
+                        notenInstanziieren();
 
+                        // punkte-anzahlen zu noten-anzahlen
+                        notenSynchronisieren();
+
+                        // reset der eingabefelder
+                        resetInputNoten();
+                    case 1:
+                        // allgemeiner reset
+                        punkteInstanziieren();
+                        notenInstanziieren();
+
+                        // punkte-anzahlen zu noten-anzahlen
+                        notenSynchronisieren();
+
+                        // reset der eingabefelder
+                        resetInputPunkte();
+                    case 2:
+                        // todo liste aktualisieren
+                }
             }
         });
-
     }
 
     @Override

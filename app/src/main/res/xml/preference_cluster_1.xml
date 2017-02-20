@@ -6,13 +6,20 @@
             android:dialogTitle="Klassen- und Kursnamen; durch Kommata getrennt."
             android:key="kurse"
             android:summary="Hier können die Listen für Klassen- und Kursnamen bearbeitet werden. Geben Sie die Listeneinträge jeweils durch Kommata getrennt ein."
-            android:title="Klassen und Kurse" />
+            android:title="Klassen und Kurse:" />
 
         <EditTextPreference
             android:defaultValue="11/1,11/2,12/1,12/2,2016/17"
             android:dialogTitle="Schuljahre und Semester; durch Kommata getrennt."
             android:key="semester"
             android:summary="Hier können die Listen für Schuljahre und Semester bearbeitet werden. Geben Sie die Listeneinträge jeweils durch Kommata getrennt ein."
-            android:title="Schuljahre und Semester" />
+            android:title="Schuljahre und Semester:" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Ergebnisse">
+    <SwitchPreference
+        android:key="switch"
+        android:summary="Informationen, Bearbeiten und Löschen werden als Kontextmenü angezeigt >> Listeneinträge länger antippen."
+        android:title="Folgenden Hilfetext einblenden:" />
     </PreferenceCategory>
 </PreferenceScreen>

@@ -3,7 +3,7 @@
     <string name="action_info">Über Schnitte</string>
     <string name="change_preferences">Einstellungen</string>
     <string name="errorText">Geben Sie zuerst Zahlenwerte ein.</string>
-    <string name="dialog_info">Version 1.06 \nCopyright © 2016/17
+    <string name="dialog_info">Version 1.07 \nCopyright © 2016/17
         \nJohannes Hock \nErnst-Kreußling-Str. 17 \n97437 Haßfurt \nDeutschland</string>
     <string name="dialog_mail">mail: info@adhocgrafx.de</string>
     <string name="dialog_web">Web: www.adhocgrafx.de</string>

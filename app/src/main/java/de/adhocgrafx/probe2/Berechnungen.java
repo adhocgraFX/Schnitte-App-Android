@@ -18,7 +18,7 @@ public class Berechnungen
     /** enthält die Anzahl der Arbeiten */
     static int anzahl;
     /** enthält die Anzahl der Punkte-Werte */
-    static final int[][] punkte = new int[16][2];
+    static int[][] punkte = new int[16][2];
     /** enthält die Anzahl der Noten-Werte */
     static int[][] noten = new int[7][2];
     /** enthält den Punkteschnitt */

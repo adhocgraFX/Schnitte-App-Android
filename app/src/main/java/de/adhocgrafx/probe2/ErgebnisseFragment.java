@@ -3,7 +3,6 @@ package de.adhocgrafx.probe2;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,7 +12,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +32,8 @@ import java.util.List;
 import static de.adhocgrafx.probe2.MainActivity.formatAnzahl;
 import static de.adhocgrafx.probe2.MainActivity.formatErgebnis;
 import static de.adhocgrafx.probe2.MainActivity.getKlausurenErgebnisse;
-import static de.adhocgrafx.probe2.MyDBHelper.COLUMN_KLAUSURNAME;
 import static de.adhocgrafx.probe2.R.id.txtDate;
+import static de.adhocgrafx.probe2.R.string.n1;
 
 public class ErgebnisseFragment extends ListFragment {
 
@@ -197,13 +195,13 @@ public class ErgebnisseFragment extends ListFragment {
         if (tempklausur.mode.equals("klausur")) {
             lblInfo1.setText("Kurs:" + "\n" + "Semester:" + "\n" + "Datum:");
             lblInfo2.setText("Anzahl:" + "\n" + "Punkteschnitt:" + "\n" + "Notenschnitt:" + "\n" + "P3 - P0:");
-            txtInfo2.setText(formatAnzahl(tempklausur.anzahl) + "\n" + formatErgebnis(tempklausur.schnittPunkte) + "\n" +
+            txtInfo2.setText(String.valueOf(tempklausur.anzahl) + "\n" + formatErgebnis(tempklausur.schnittPunkte) + "\n" +
                     formatErgebnis(tempklausur.schnittNoten) + "\n" + formatErgebnis(tempklausur.prozentUngenuegend) + "%");
         }
         else if (tempklausur.mode.equals("schulaufgabe")) {
             lblInfo1.setText("Klasse:" + "\n" + "Schuljahr:" + "\n" + "Datum:");
             lblInfo2.setText("Anzahl:" + "\n" + "Notenschnitt:" + "\n" + "N5 - N6:");
-            txtInfo2.setText(formatAnzahl(tempklausur.anzahl) + "\n" + formatErgebnis(tempklausur.schnittNoten) + "\n" +
+            txtInfo2.setText(String.valueOf(tempklausur.anzahl) + "\n" + formatErgebnis(tempklausur.schnittNoten) + "\n" +
                     formatErgebnis(tempklausur.prozentUngenuegend) + "%");
         }
 
@@ -333,7 +331,7 @@ public class ErgebnisseFragment extends ListFragment {
 
         } else {
             // endgültig speichern
-            myValues.put(COLUMN_KLAUSURNAME, wrapper.getKlausur());
+            myValues.put(MyDBHelper.COLUMN_KLAUSURNAME, wrapper.getKlausur());
             myValues.put(MyDBHelper.COLUMN_KURS, wrapper.getKursText());
             myValues.put(MyDBHelper.COLUMN_SEMESTER, wrapper.getSemesterText());
             myValues.put(MyDBHelper.COLUMN_INFO, wrapper.getInfo());
@@ -351,9 +349,234 @@ public class ErgebnisseFragment extends ListFragment {
     // update Schnitt dialog
     private void updateSchnitt(final int position) {
 
+        tempklausur = MainActivity.myListClick(position);
+
+        final Context myContext = getActivity();
+        final Activity activity = getActivity();
+
+        LayoutInflater myInflater = LayoutInflater.from(myContext);
+
+        if (tempklausur.mode.equals("klausur")) {
+
+            View addView = myInflater.inflate(R.layout.edit_punkte, null);
+            final DialogWrapper punkteWrapper = new DialogWrapper(addView);
+
+            EditText P15 = (EditText) addView.findViewById(R.id.editP15);
+            EditText P14 = (EditText) addView.findViewById(R.id.editP14);
+            EditText P13 = (EditText) addView.findViewById(R.id.editP13);
+            EditText P12 = (EditText) addView.findViewById(R.id.editP12);
+            EditText P11 = (EditText) addView.findViewById(R.id.editP11);
+            EditText P10 = (EditText) addView.findViewById(R.id.editP10);
+            EditText P9 = (EditText) addView.findViewById(R.id.editP9);
+            EditText P8 = (EditText) addView.findViewById(R.id.editP8);
+            EditText P7 = (EditText) addView.findViewById(R.id.editP7);
+            EditText P6 = (EditText) addView.findViewById(R.id.editP6);
+            EditText P5 = (EditText) addView.findViewById(R.id.editP5);
+            EditText P4 = (EditText) addView.findViewById(R.id.editP4);
+            EditText P3 = (EditText) addView.findViewById(R.id.editP3);
+            EditText P2 = (EditText) addView.findViewById(R.id.editP2);
+            EditText P1 = (EditText) addView.findViewById(R.id.editP1);
+            EditText P0 = (EditText) addView.findViewById(R.id.editP0);
+
+            TextView txtPunkteErgebnis = (TextView) addView.findViewById(R.id.textErgebnisPunkte);
+            Button btnPunkteBerechnen = (Button) addView.findViewById(R.id.btnBerechnenPunkte);
+            Button btnPunkteReset = (Button) addView.findViewById(R.id.btnResetPunkte);
+
+            // set edit texte
+            if (tempklausur.p15 != 0) P15.setText(String.valueOf(tempklausur.p15));
+            if (tempklausur.p14 != 0) P14.setText(String.valueOf(tempklausur.p14));
+            if (tempklausur.p13 != 0) P13.setText(String.valueOf(tempklausur.p13));
+            if (tempklausur.p12 != 0) P12.setText(String.valueOf(tempklausur.p12));
+            if (tempklausur.p11 != 0) P11.setText(String.valueOf(tempklausur.p11));
+            if (tempklausur.p10 != 0) P10.setText(String.valueOf(tempklausur.p10));
+            if (tempklausur.p9 != 0) P9.setText(String.valueOf(tempklausur.p9));
+            if (tempklausur.p8 != 0) P8.setText(String.valueOf(tempklausur.p8));
+            if (tempklausur.p7 != 0) P7.setText(String.valueOf(tempklausur.p7));
+            if (tempklausur.p6 != 0) P6.setText(String.valueOf(tempklausur.p6));
+            if (tempklausur.p5 != 0) P5.setText(String.valueOf(tempklausur.p5));
+            if (tempklausur.p4 != 0) P4.setText(String.valueOf(tempklausur.p4));
+            if (tempklausur.p3 != 0) P3.setText(String.valueOf(tempklausur.p3));
+            if (tempklausur.p2 != 0) P2.setText(String.valueOf(tempklausur.p2));
+            if (tempklausur.p1 != 0) P1.setText(String.valueOf(tempklausur.p1));
+            if (tempklausur.p0 != 0) P0.setText(String.valueOf(tempklausur.p0));
+
+            // Todo berechnen fehlt noch!
+
+
+            new AlertDialog.Builder(myContext)
+                    .setTitle(tempklausur.klausurName + " bearbeiten")
+                    .setView(addView)
+
+                    .setPositiveButton(R.string.speichern,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int whichButton) {
+
+                                    gespeichert = updatePunkteSchnittData(punkteWrapper, position);
+
+                                    if (!gespeichert) {
+                                        // toasten
+                                        CharSequence text2 = "Die Prüfung konnte nicht gespeichert werden. Geben Sie bitte einen Prüfungsnamen ein.";
+                                        int duration2 = Toast.LENGTH_LONG;
+                                        Toast toast2 = Toast.makeText(myContext, text2, duration2);
+                                        toast2.show();
+                                    } else {
+                                        // toasten
+                                        CharSequence text = "Die Prüfung wurde erfolgreich gespeichert.";
+                                        int duration = Toast.LENGTH_SHORT;
+                                        Toast toast = Toast.makeText(myContext, text, duration);
+                                        toast.show();
+                                    }
+                                    // refresh
+                                    displayKlausuren();
+                                }
+                            })
+
+                    .setNegativeButton(R.string.cancel,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int whichButton) {
+                                    // Nothing to do here
+                                }
+                            })
+
+                    .show();
+        }
+
+        else if (tempklausur.mode.equals("schulaufgabe")) {
+
+            View addView = myInflater.inflate(R.layout.edit_noten, null);
+            final DialogWrapper notenWrapper = new DialogWrapper(addView);
+
+            EditText N1 = (EditText) addView.findViewById(R.id.editN1);
+            EditText N2 = (EditText) addView.findViewById(R.id.editN2);
+            EditText N3 = (EditText) addView.findViewById(R.id.editN3);
+            EditText N4 = (EditText) addView.findViewById(R.id.editN4);
+            EditText N5 = (EditText) addView.findViewById(R.id.editN5);
+            EditText N6 = (EditText) addView.findViewById(R.id.editN6);
+
+            TextView txtNotenErgebnis = (TextView) addView.findViewById(R.id.textErgebnisNoten);
+            Button btnNotenBerechnen = (Button) addView.findViewById(R.id.btnBerechnenNoten);
+            Button btnNotenReset = (Button) addView.findViewById(R.id.btnResetNoten);
+
+            // set edit texte
+            if (tempklausur.n1 != 0) N1.setText(String.valueOf(tempklausur.n1));
+            if (tempklausur.n2 != 0) N2.setText(String.valueOf(tempklausur.n2));
+            if (tempklausur.n3 != 0) N3.setText(String.valueOf(tempklausur.n3));
+            if (tempklausur.n4 != 0) N4.setText(String.valueOf(tempklausur.n4));
+            if (tempklausur.n5 != 0) N5.setText(String.valueOf(tempklausur.n5));
+            if (tempklausur.n6 != 0) N6.setText(String.valueOf(tempklausur.n6));
+
+            // Todo berechnen fehlt noch!
+
+
+            new AlertDialog.Builder(myContext)
+                    .setTitle(tempklausur.klausurName + " bearbeiten")
+                    .setView(addView)
+
+                    .setPositiveButton(R.string.speichern,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int whichButton) {
+
+                                    gespeichert = updateNotenSchnittData(notenWrapper, position);
+
+                                    if (!gespeichert) {
+                                        // toasten
+                                        CharSequence text2 = "Die Prüfung konnte nicht gespeichert werden. Geben Sie bitte einen Prüfungsnamen ein.";
+                                        int duration2 = Toast.LENGTH_LONG;
+                                        Toast toast2 = Toast.makeText(myContext, text2, duration2);
+                                        toast2.show();
+                                    } else {
+                                        // toasten
+                                        CharSequence text = "Die Prüfung wurde erfolgreich gespeichert.";
+                                        int duration = Toast.LENGTH_SHORT;
+                                        Toast toast = Toast.makeText(myContext, text, duration);
+                                        toast.show();
+                                    }
+                                    // refresh
+                                    displayKlausuren();
+                                }
+                            })
+
+                    .setNegativeButton(R.string.cancel,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int whichButton) {
+                                    // Nothing to do here
+                                }
+                            })
+
+                    .show();
+        }
     }
 
-    public boolean updateSchnittData(DialogWrapper wrapper, int position) {
+    public boolean updatePunkteSchnittData(DialogWrapper wrapper, int position) {
+
+        // values einlesen
+        myValues = new ContentValues();
+
+        if (wrapper.getKlausur().isEmpty()) {
+            // nothing is saved
+            gespeichert = false;
+
+        } else {
+            // endgültig speichern
+            myValues.put(MyDBHelper.COLUMN_P15, wrapper.getP15());
+            myValues.put(MyDBHelper.COLUMN_P14, wrapper.getP14());
+            myValues.put(MyDBHelper.COLUMN_P13, wrapper.getP13());
+            myValues.put(MyDBHelper.COLUMN_P12, wrapper.getP12());
+            myValues.put(MyDBHelper.COLUMN_P11, wrapper.getP11());
+            myValues.put(MyDBHelper.COLUMN_P10, wrapper.getP10());
+            myValues.put(MyDBHelper.COLUMN_P9, wrapper.getP9());
+            myValues.put(MyDBHelper.COLUMN_P8, wrapper.getP8());
+            myValues.put(MyDBHelper.COLUMN_P7, wrapper.getP7());
+            myValues.put(MyDBHelper.COLUMN_P6, wrapper.getP6());
+            myValues.put(MyDBHelper.COLUMN_P5, wrapper.getP5());
+            myValues.put(MyDBHelper.COLUMN_P4, wrapper.getP4());
+            myValues.put(MyDBHelper.COLUMN_P3, wrapper.getP3());
+            myValues.put(MyDBHelper.COLUMN_P2, wrapper.getP2());
+            myValues.put(MyDBHelper.COLUMN_P1, wrapper.getP1());
+            myValues.put(MyDBHelper.COLUMN_P0, wrapper.getP0());
+
+            // todo ergebnis fehlt noch!
+
+
+            // datenbank update aktivität in MainActivity ausführen
+            MainActivity.myKlausurUpdate(myValues, position);
+
+            gespeichert = true;
+        }
+
+        return gespeichert;
+    }
+
+    public boolean updateNotenSchnittData(DialogWrapper wrapper, int position) {
+
+        // values einlesen
+        myValues = new ContentValues();
+
+        if (wrapper.getKlausur().isEmpty()) {
+            // nothing is saved
+            gespeichert = false;
+
+        } else {
+            // endgültig speichern
+            myValues.put(MyDBHelper.COLUMN_N1, wrapper.getN1());
+            myValues.put(MyDBHelper.COLUMN_N2, wrapper.getN2());
+            myValues.put(MyDBHelper.COLUMN_N3, wrapper.getN3());
+            myValues.put(MyDBHelper.COLUMN_N4, wrapper.getN4());
+            myValues.put(MyDBHelper.COLUMN_N5, wrapper.getN5());
+            myValues.put(MyDBHelper.COLUMN_N6, wrapper.getN6());
+
+            // todo ergebnis fehlt noch!
+
+
+            // datenbank update aktivität in MainActivity ausführen
+            MainActivity.myKlausurUpdate(myValues, position);
+
+            gespeichert = true;
+        }
 
         return gespeichert;
     }

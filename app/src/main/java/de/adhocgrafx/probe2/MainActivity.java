@@ -321,9 +321,11 @@ public class MainActivity extends AppCompatActivity {
     public static Klausur myListClick(int position) {
 
         Cursor cursor = myDB.rawQuery(
-                "select _id, klausur_name, kurs, semester, info, mode, " +
-                        "datum, anzahl, schnitt_punkte, schnitt_noten, " +
-                        "prozent_ungenuegend " + "from klausuren", null);
+                "select _id, klausur_name, kurs, semester, info, mode, datum, " +
+                        "anzahl, schnitt_punkte, schnitt_noten, prozent_ungenuegend, " +
+                        "p15, p14, p13, p12, p11, p10, p9, p8, p7, p6, p5, p4, p3, p2, p1, p0, " +
+                        "n6, n5, n4, n3, n2, n1 " +
+                        "from klausuren", null);
 
         cursor.moveToPosition(position);
 
@@ -339,6 +341,30 @@ public class MainActivity extends AppCompatActivity {
         tempklausur.schnittNoten = cursor.getDouble(MyDBHelper.COL_NO_SCHNITT_NOTEN);
         tempklausur.schnittPunkte = cursor.getDouble(MyDBHelper.COL_NO_SCHNITT_PUNKTE);
         tempklausur.prozentUngenuegend = cursor.getDouble(MyDBHelper.COL_NO_PROZENT_UNGENUEGEND);
+
+        tempklausur.p15 = cursor.getInt(MyDBHelper.COL_NO_P15);
+        tempklausur.p14 = cursor.getInt(MyDBHelper.COL_NO_P14);
+        tempklausur.p13 = cursor.getInt(MyDBHelper.COL_NO_P13);
+        tempklausur.p12 = cursor.getInt(MyDBHelper.COL_NO_P12);
+        tempklausur.p11 = cursor.getInt(MyDBHelper.COL_NO_P11);
+        tempklausur.p10 = cursor.getInt(MyDBHelper.COL_NO_P10);
+        tempklausur.p9 = cursor.getInt(MyDBHelper.COL_NO_P9);
+        tempklausur.p8 = cursor.getInt(MyDBHelper.COL_NO_P8);
+        tempklausur.p7 = cursor.getInt(MyDBHelper.COL_NO_P7);
+        tempklausur.p6 = cursor.getInt(MyDBHelper.COL_NO_P6);
+        tempklausur.p5 = cursor.getInt(MyDBHelper.COL_NO_P5);
+        tempklausur.p4 = cursor.getInt(MyDBHelper.COL_NO_P4);
+        tempklausur.p3 = cursor.getInt(MyDBHelper.COL_NO_P3);
+        tempklausur.p2 = cursor.getInt(MyDBHelper.COL_NO_P2);
+        tempklausur.p1 = cursor.getInt(MyDBHelper.COL_NO_P1);
+        tempklausur.p0 = cursor.getInt(MyDBHelper.COL_NO_P0);
+
+        tempklausur.n6 = cursor.getInt(MyDBHelper.COL_NO_N6);
+        tempklausur.n5 = cursor.getInt(MyDBHelper.COL_NO_N5);
+        tempklausur.n4 = cursor.getInt(MyDBHelper.COL_NO_N4);
+        tempklausur.n3 = cursor.getInt(MyDBHelper.COL_NO_N3);
+        tempklausur.n2 = cursor.getInt(MyDBHelper.COL_NO_N2);
+        tempklausur.n1 = cursor.getInt(MyDBHelper.COL_NO_N1);
 
         cursor.close();
 
@@ -608,7 +634,7 @@ public class MainActivity extends AppCompatActivity {
 
         } else {
             // endgültig speichern
-            myValues.put(COLUMN_KLAUSURNAME, wrapper.getKlausur());
+            myValues.put(MyDBHelper.COLUMN_KLAUSURNAME, wrapper.getKlausur());
             myValues.put(MyDBHelper.COLUMN_KURS, wrapper.getKurs());
             myValues.put(MyDBHelper.COLUMN_SEMESTER, wrapper.getSemester());
             myValues.put(MyDBHelper.COLUMN_INFO, wrapper.getInfo());
@@ -900,6 +926,7 @@ public class MainActivity extends AppCompatActivity {
             tempPruefung.setAnzahl(schnittNoten.anzahl);
             tempPruefung.setSchnittNoten(schnittNoten.schnittNoten);
             tempPruefung.setProzentUngenuegend(schnittNoten.prozentUngenuegend);
+
             tempPruefung.setN1(noten[1][1]);
             tempPruefung.setN2(noten[2][1]);
             tempPruefung.setN3(noten[3][1]);

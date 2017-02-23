@@ -29,17 +29,38 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import static de.adhocgrafx.probe2.MainActivity.formatAnzahl;
+import static de.adhocgrafx.probe2.Berechnungen.anzahl;
+import static de.adhocgrafx.probe2.Berechnungen.klausurenAnzahlBerechnen;
+import static de.adhocgrafx.probe2.Berechnungen.noten;
+import static de.adhocgrafx.probe2.Berechnungen.notenInstanziieren;
+import static de.adhocgrafx.probe2.Berechnungen.notenSchnittBerechnen;
+import static de.adhocgrafx.probe2.Berechnungen.notenSynchronisieren;
+import static de.adhocgrafx.probe2.Berechnungen.notenschnitt;
+import static de.adhocgrafx.probe2.Berechnungen.punkte;
+import static de.adhocgrafx.probe2.Berechnungen.punkteInstanziieren;
+import static de.adhocgrafx.probe2.Berechnungen.punkteSchnittBerechnen;
+import static de.adhocgrafx.probe2.Berechnungen.punkteschnitt;
+import static de.adhocgrafx.probe2.Berechnungen.schulaufgabenAnzahlBerechnen;
+import static de.adhocgrafx.probe2.Berechnungen.tempBerechnungenNoten;
+import static de.adhocgrafx.probe2.Berechnungen.tempBerechnungenPunkte;
+import static de.adhocgrafx.probe2.Berechnungen.tempnotensumme;
+import static de.adhocgrafx.probe2.Berechnungen.temppunktesumme;
+import static de.adhocgrafx.probe2.Berechnungen.tempungenuegend;
+import static de.adhocgrafx.probe2.Berechnungen.ungenuegend;
+import static de.adhocgrafx.probe2.Berechnungen.ungenuegendBerechnen;
 import static de.adhocgrafx.probe2.MainActivity.formatErgebnis;
 import static de.adhocgrafx.probe2.MainActivity.getKlausurenErgebnisse;
+import static de.adhocgrafx.probe2.R.id.btnResetNoten;
 import static de.adhocgrafx.probe2.R.id.txtDate;
-import static de.adhocgrafx.probe2.R.string.n1;
 
 public class ErgebnisseFragment extends ListFragment {
 
     public ContentValues myValues;
     public Klausur tempklausur = new Klausur();
+    public Schnitte schnittPunkte = new Schnitte();
+    public Schnitte schnittNoten = new Schnitte();
     public boolean gespeichert;
+    public boolean berechnet;
 
     static final int INFO_ID = 0;
     static final int EDIT_INFO_ID = 1;
@@ -349,6 +370,7 @@ public class ErgebnisseFragment extends ListFragment {
     // update Schnitt dialog
     private void updateSchnitt(final int position) {
 
+        berechnet = false;
         tempklausur = MainActivity.myListClick(position);
 
         final Context myContext = getActivity();
@@ -361,47 +383,205 @@ public class ErgebnisseFragment extends ListFragment {
             View addView = myInflater.inflate(R.layout.edit_punkte, null);
             final DialogWrapper punkteWrapper = new DialogWrapper(addView);
 
-            EditText P15 = (EditText) addView.findViewById(R.id.editP15);
-            EditText P14 = (EditText) addView.findViewById(R.id.editP14);
-            EditText P13 = (EditText) addView.findViewById(R.id.editP13);
-            EditText P12 = (EditText) addView.findViewById(R.id.editP12);
-            EditText P11 = (EditText) addView.findViewById(R.id.editP11);
-            EditText P10 = (EditText) addView.findViewById(R.id.editP10);
-            EditText P9 = (EditText) addView.findViewById(R.id.editP9);
-            EditText P8 = (EditText) addView.findViewById(R.id.editP8);
-            EditText P7 = (EditText) addView.findViewById(R.id.editP7);
-            EditText P6 = (EditText) addView.findViewById(R.id.editP6);
-            EditText P5 = (EditText) addView.findViewById(R.id.editP5);
-            EditText P4 = (EditText) addView.findViewById(R.id.editP4);
-            EditText P3 = (EditText) addView.findViewById(R.id.editP3);
-            EditText P2 = (EditText) addView.findViewById(R.id.editP2);
-            EditText P1 = (EditText) addView.findViewById(R.id.editP1);
-            EditText P0 = (EditText) addView.findViewById(R.id.editP0);
+            final EditText p15 = (EditText) addView.findViewById(R.id.editP15);
+            final EditText p14 = (EditText) addView.findViewById(R.id.editP14);
+            final EditText p13 = (EditText) addView.findViewById(R.id.editP13);
+            final EditText p12 = (EditText) addView.findViewById(R.id.editP12);
+            final EditText p11 = (EditText) addView.findViewById(R.id.editP11);
+            final EditText p10 = (EditText) addView.findViewById(R.id.editP10);
+            final EditText p9 = (EditText) addView.findViewById(R.id.editP9);
+            final EditText p8 = (EditText) addView.findViewById(R.id.editP8);
+            final EditText p7 = (EditText) addView.findViewById(R.id.editP7);
+            final EditText p6 = (EditText) addView.findViewById(R.id.editP6);
+            final EditText p5 = (EditText) addView.findViewById(R.id.editP5);
+            final EditText p4 = (EditText) addView.findViewById(R.id.editP4);
+            final EditText p3 = (EditText) addView.findViewById(R.id.editP3);
+            final EditText p2 = (EditText) addView.findViewById(R.id.editP2);
+            final EditText p1 = (EditText) addView.findViewById(R.id.editP1);
+            final EditText p0 = (EditText) addView.findViewById(R.id.editP0);
 
-            TextView txtPunkteErgebnis = (TextView) addView.findViewById(R.id.textErgebnisPunkte);
-            Button btnPunkteBerechnen = (Button) addView.findViewById(R.id.btnBerechnenPunkte);
+            final TextView txtPunkteErgebnis = (TextView) addView.findViewById(R.id.textErgebnisPunkte);
+            Button btnPunkteBerechnen = (Button) addView.findViewById(R.id.btnBerechnePunkte);
             Button btnPunkteReset = (Button) addView.findViewById(R.id.btnResetPunkte);
 
             // set edit texte
-            if (tempklausur.p15 != 0) P15.setText(String.valueOf(tempklausur.p15));
-            if (tempklausur.p14 != 0) P14.setText(String.valueOf(tempklausur.p14));
-            if (tempklausur.p13 != 0) P13.setText(String.valueOf(tempklausur.p13));
-            if (tempklausur.p12 != 0) P12.setText(String.valueOf(tempklausur.p12));
-            if (tempklausur.p11 != 0) P11.setText(String.valueOf(tempklausur.p11));
-            if (tempklausur.p10 != 0) P10.setText(String.valueOf(tempklausur.p10));
-            if (tempklausur.p9 != 0) P9.setText(String.valueOf(tempklausur.p9));
-            if (tempklausur.p8 != 0) P8.setText(String.valueOf(tempklausur.p8));
-            if (tempklausur.p7 != 0) P7.setText(String.valueOf(tempklausur.p7));
-            if (tempklausur.p6 != 0) P6.setText(String.valueOf(tempklausur.p6));
-            if (tempklausur.p5 != 0) P5.setText(String.valueOf(tempklausur.p5));
-            if (tempklausur.p4 != 0) P4.setText(String.valueOf(tempklausur.p4));
-            if (tempklausur.p3 != 0) P3.setText(String.valueOf(tempklausur.p3));
-            if (tempklausur.p2 != 0) P2.setText(String.valueOf(tempklausur.p2));
-            if (tempklausur.p1 != 0) P1.setText(String.valueOf(tempklausur.p1));
-            if (tempklausur.p0 != 0) P0.setText(String.valueOf(tempklausur.p0));
+            if (tempklausur.p15 != 0) p15.setText(String.valueOf(tempklausur.p15));
+            if (tempklausur.p14 != 0) p14.setText(String.valueOf(tempklausur.p14));
+            if (tempklausur.p13 != 0) p13.setText(String.valueOf(tempklausur.p13));
+            if (tempklausur.p12 != 0) p12.setText(String.valueOf(tempklausur.p12));
+            if (tempklausur.p11 != 0) p11.setText(String.valueOf(tempklausur.p11));
+            if (tempklausur.p10 != 0) p10.setText(String.valueOf(tempklausur.p10));
+            if (tempklausur.p9 != 0) p9.setText(String.valueOf(tempklausur.p9));
+            if (tempklausur.p8 != 0) p8.setText(String.valueOf(tempklausur.p8));
+            if (tempklausur.p7 != 0) p7.setText(String.valueOf(tempklausur.p7));
+            if (tempklausur.p6 != 0) p6.setText(String.valueOf(tempklausur.p6));
+            if (tempklausur.p5 != 0) p5.setText(String.valueOf(tempklausur.p5));
+            if (tempklausur.p4 != 0) p4.setText(String.valueOf(tempklausur.p4));
+            if (tempklausur.p3 != 0) p3.setText(String.valueOf(tempklausur.p3));
+            if (tempklausur.p2 != 0) p2.setText(String.valueOf(tempklausur.p2));
+            if (tempklausur.p1 != 0) p1.setText(String.valueOf(tempklausur.p1));
+            if (tempklausur.p0 != 0) p0.setText(String.valueOf(tempklausur.p0));
 
-            // Todo berechnen fehlt noch!
+            // berechnen und reset
+            btnPunkteBerechnen.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
 
+                    // get noten input anzahlen
+                    try {
+                        punkte[15][1] = Integer.parseInt(p15.getText().toString());
+                    } catch (NumberFormatException e) {
+                        punkte[15][1] = 0;
+                    }
+                    try {
+                        punkte[14][1] = Integer.parseInt(p14.getText().toString());
+                    } catch (NumberFormatException e) {
+                        punkte[14][1] = 0;
+                    }
+                    try {
+                        punkte[13][1] = Integer.parseInt(p13.getText().toString());
+                    } catch (NumberFormatException e) {
+                        punkte[13][1] = 0;
+                    }
+                    try {
+                        punkte[12][1] = Integer.parseInt(p12.getText().toString());
+                    } catch (NumberFormatException e) {
+                        punkte[12][1] = 0;
+                    }
+                    try {
+                        punkte[11][1] = Integer.parseInt(p11.getText().toString());
+                    } catch (NumberFormatException e) {
+                        punkte[11][1] = 0;
+                    }
+                    try {
+                        punkte[10][1] = Integer.parseInt(p10.getText().toString());
+                    } catch (NumberFormatException e) {
+                        punkte[10][1] = 0;
+                    }
+                    try {
+                        punkte[9][1] = Integer.parseInt(p9.getText().toString());
+                    } catch (NumberFormatException e) {
+                        punkte[9][1] = 0;
+                    }
+                    try {
+                        punkte[8][1] = Integer.parseInt(p8.getText().toString());
+                    } catch (NumberFormatException e) {
+                        punkte[8][1] = 0;
+                    }
+                    try {
+                        punkte[7][1] = Integer.parseInt(p7.getText().toString());
+                    } catch (NumberFormatException e) {
+                        punkte[7][1] = 0;
+                    }
+                    try {
+                        punkte[6][1] = Integer.parseInt(p6.getText().toString());
+                    } catch (NumberFormatException e) {
+                        punkte[6][1] = 0;
+                    }
+                    try {
+                        punkte[5][1] = Integer.parseInt(p5.getText().toString());
+                    } catch (NumberFormatException e) {
+                        punkte[5][1] = 0;
+                    }
+                    try {
+                        punkte[4][1] = Integer.parseInt(p4.getText().toString());
+                    } catch (NumberFormatException e) {
+                        punkte[4][1] = 0;
+                    }
+                    try {
+                        punkte[3][1] = Integer.parseInt(p3.getText().toString());
+                    } catch (NumberFormatException e) {
+                        punkte[3][1] = 0;
+                    }
+                    try {
+                        punkte[2][1] = Integer.parseInt(p2.getText().toString());
+                    } catch (NumberFormatException e) {
+                        punkte[2][1] = 0;
+                    }
+                    try {
+                        punkte[1][1] = Integer.parseInt(p1.getText().toString());
+                    } catch (NumberFormatException e) {
+                        punkte[1][1] = 0;
+                    }
+                    try {
+                        punkte[0][1] = Integer.parseInt(p0.getText().toString());
+                    } catch (NumberFormatException e) {
+                        punkte[0][1] = 0;
+                    }
+
+                    // punkte-anzahlen zu noten-anzahlen
+                    notenSynchronisieren();
+
+                    // temporäre Berechnungen
+                    tempBerechnungenPunkte();
+
+                    // Berechnungen
+                    klausurenAnzahlBerechnen();
+
+                    if (klausurenAnzahlBerechnen() != 0) {
+                        punkteSchnittBerechnen(temppunktesumme, anzahl);
+                        notenSchnittBerechnen(tempnotensumme, anzahl);
+                        ungenuegendBerechnen(tempungenuegend, anzahl);
+
+                        // neues Objekt
+                        schnittPunkte = new Schnitte(anzahl, punkteschnitt, notenschnitt, ungenuegend);
+
+                        // Ergebnis
+                        txtPunkteErgebnis.setText("");
+                        txtPunkteErgebnis.setText("Anzahl der Arbeiten: " + schnittPunkte.anzahl + "\n" +
+                                "Punkteschnitt: " + formatErgebnis(schnittPunkte.schnittPunkte) + "\n" +
+                                "Notenschnitt: " + formatErgebnis(schnittPunkte.schnittNoten) + "\n" +
+                                "P3 - P0: " + formatErgebnis(schnittPunkte.prozentUngenuegend) + "%");
+
+                        berechnet = true;
+
+                    } else if (klausurenAnzahlBerechnen() == 0) {
+                        // kein Ergebnis
+                        txtPunkteErgebnis.setText("");
+                        txtPunkteErgebnis.setText(R.string.errorText);
+
+                        berechnet = false;
+                    }
+
+                    // allgemeiner reset
+                    punkteInstanziieren();
+                    notenInstanziieren();
+
+                    // punkte-anzahlen zu noten-anzahlen
+                    notenSynchronisieren();
+                }
+            });
+
+            btnPunkteReset.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+
+                    // allgemeiner reset
+                    punkteInstanziieren();
+                    notenInstanziieren();
+
+                    // punkte-anzahlen zu noten-anzahlen
+                    notenSynchronisieren();
+
+                    p15.setText("");
+                    p14.setText("");
+                    p13.setText("");
+                    p12.setText("");
+                    p11.setText("");
+                    p10.setText("");
+                    p9.setText("");
+                    p8.setText("");
+                    p7.setText("");
+                    p6.setText("");
+                    p5.setText("");
+                    p4.setText("");
+                    p3.setText("");
+                    p2.setText("");
+                    p1.setText("");
+                    p0.setText("");
+                    txtPunkteErgebnis.setText("");
+
+                    berechnet = false;
+                }
+            });
 
             new AlertDialog.Builder(myContext)
                     .setTitle(tempklausur.klausurName + " bearbeiten")
@@ -412,11 +592,11 @@ public class ErgebnisseFragment extends ListFragment {
                                 public void onClick(DialogInterface dialog,
                                                     int whichButton) {
 
-                                    gespeichert = updatePunkteSchnittData(punkteWrapper, position);
+                                    gespeichert = updatePunkteSchnittData(punkteWrapper, position, schnittPunkte);
 
                                     if (!gespeichert) {
                                         // toasten
-                                        CharSequence text2 = "Die Prüfung konnte nicht gespeichert werden. Geben Sie bitte einen Prüfungsnamen ein.";
+                                        CharSequence text2 = "Die Prüfung konnte nicht gespeichert werden. Berechnen Sie bitte erst das Ergebnis.";
                                         int duration2 = Toast.LENGTH_LONG;
                                         Toast toast2 = Toast.makeText(myContext, text2, duration2);
                                         toast2.show();
@@ -448,27 +628,121 @@ public class ErgebnisseFragment extends ListFragment {
             View addView = myInflater.inflate(R.layout.edit_noten, null);
             final DialogWrapper notenWrapper = new DialogWrapper(addView);
 
-            EditText N1 = (EditText) addView.findViewById(R.id.editN1);
-            EditText N2 = (EditText) addView.findViewById(R.id.editN2);
-            EditText N3 = (EditText) addView.findViewById(R.id.editN3);
-            EditText N4 = (EditText) addView.findViewById(R.id.editN4);
-            EditText N5 = (EditText) addView.findViewById(R.id.editN5);
-            EditText N6 = (EditText) addView.findViewById(R.id.editN6);
+            final EditText n1 = (EditText) addView.findViewById(R.id.editN1);
+            final EditText n2 = (EditText) addView.findViewById(R.id.editN2);
+            final EditText n3 = (EditText) addView.findViewById(R.id.editN3);
+            final EditText n4 = (EditText) addView.findViewById(R.id.editN4);
+            final EditText n5 = (EditText) addView.findViewById(R.id.editN5);
+            final EditText n6 = (EditText) addView.findViewById(R.id.editN6);
 
-            TextView txtNotenErgebnis = (TextView) addView.findViewById(R.id.textErgebnisNoten);
-            Button btnNotenBerechnen = (Button) addView.findViewById(R.id.btnBerechnenNoten);
-            Button btnNotenReset = (Button) addView.findViewById(R.id.btnResetNoten);
+            final TextView txtNotenErgebnis = (TextView) addView.findViewById(R.id.textErgebnisNoten);
+            Button btnNotenBerechnen = (Button) addView.findViewById(R.id.btnBerechneNoten);
+            Button btnNotenReset = (Button) addView.findViewById(btnResetNoten);
 
             // set edit texte
-            if (tempklausur.n1 != 0) N1.setText(String.valueOf(tempklausur.n1));
-            if (tempklausur.n2 != 0) N2.setText(String.valueOf(tempklausur.n2));
-            if (tempklausur.n3 != 0) N3.setText(String.valueOf(tempklausur.n3));
-            if (tempklausur.n4 != 0) N4.setText(String.valueOf(tempklausur.n4));
-            if (tempklausur.n5 != 0) N5.setText(String.valueOf(tempklausur.n5));
-            if (tempklausur.n6 != 0) N6.setText(String.valueOf(tempklausur.n6));
+            if (tempklausur.n1 != 0) n1.setText(String.valueOf(tempklausur.n1));
+            if (tempklausur.n2 != 0) n2.setText(String.valueOf(tempklausur.n2));
+            if (tempklausur.n3 != 0) n3.setText(String.valueOf(tempklausur.n3));
+            if (tempklausur.n4 != 0) n4.setText(String.valueOf(tempklausur.n4));
+            if (tempklausur.n5 != 0) n5.setText(String.valueOf(tempklausur.n5));
+            if (tempklausur.n6 != 0) n6.setText(String.valueOf(tempklausur.n6));
 
-            // Todo berechnen fehlt noch!
+            // berechnen und reset
+            btnNotenBerechnen.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
 
+                    // get noten input anzahlen
+                    try {
+                        noten[1][1] = Integer.parseInt(n1.getText().toString());
+                    } catch (NumberFormatException e) {
+                        noten[1][1] = 0;
+                    }
+                    try {
+                        noten[2][1] = Integer.parseInt(n2.getText().toString());
+                    } catch (NumberFormatException e) {
+                        noten[2][1] = 0;
+                    }
+                    try {
+                        noten[3][1] = Integer.parseInt(n3.getText().toString());
+                    } catch (NumberFormatException e) {
+                        noten[3][1] = 0;
+                    }
+                    try {
+                        noten[4][1] = Integer.parseInt(n4.getText().toString());
+                    } catch (NumberFormatException e) {
+                        noten[4][1] = 0;
+                    }
+                    try {
+                        noten[5][1] = Integer.parseInt(n5.getText().toString());
+                    } catch (NumberFormatException e) {
+                        noten[5][1] = 0;
+                    }
+                    try {
+                        noten[6][1] = Integer.parseInt(n6.getText().toString());
+                    } catch (NumberFormatException e) {
+                        noten[6][1] = 0;
+                    }
+
+                    // temporäre Berechnungen
+                    tempBerechnungenNoten();
+
+                    // Berechnungen
+                    schulaufgabenAnzahlBerechnen();
+
+                    if (schulaufgabenAnzahlBerechnen() != 0) {
+                        notenSchnittBerechnen(tempnotensumme, anzahl);
+                        ungenuegendBerechnen(tempungenuegend, anzahl);
+
+                        // neues Objekt
+                        schnittNoten = new Schnitte(anzahl, notenschnitt, ungenuegend);
+
+                        // Ergebnis
+                        txtNotenErgebnis.setText("");
+                        txtNotenErgebnis.setText("Anzahl der Arbeiten: " + schnittNoten.anzahl + "\n" +
+                                "Notenschnitt: " + formatErgebnis(schnittNoten.schnittNoten) + "\n" +
+                                "N5 - N6: " + formatErgebnis(schnittNoten.prozentUngenuegend) + "%");
+
+                        berechnet = true;
+
+                    } else if (schulaufgabenAnzahlBerechnen() == 0) {
+                        // kein Ergebnis
+                        txtNotenErgebnis.setText("");
+                        txtNotenErgebnis.setText(R.string.errorText);
+
+                        berechnet = false;
+                    }
+
+                    // allgemeiner reset
+                    punkteInstanziieren();
+                    notenInstanziieren();
+
+                    // punkte-anzahlen zu noten-anzahlen
+                    notenSynchronisieren();
+                }
+            });
+
+            btnNotenReset.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+
+                    // allgemeiner reset
+                    punkteInstanziieren();
+                    notenInstanziieren();
+
+                    // punkte-anzahlen zu noten-anzahlen
+                    notenSynchronisieren();
+
+                    // reset noten input
+                    n1.setText("");
+                    n2.setText("");
+                    n3.setText("");
+                    n4.setText("");
+                    n5.setText("");
+                    n6.setText("");
+                    txtNotenErgebnis.setText("");
+
+                    berechnet = false;
+                }
+            });
 
             new AlertDialog.Builder(myContext)
                     .setTitle(tempklausur.klausurName + " bearbeiten")
@@ -479,11 +753,11 @@ public class ErgebnisseFragment extends ListFragment {
                                 public void onClick(DialogInterface dialog,
                                                     int whichButton) {
 
-                                    gespeichert = updateNotenSchnittData(notenWrapper, position);
+                                    gespeichert = updateNotenSchnittData(notenWrapper, position, schnittNoten);
 
                                     if (!gespeichert) {
                                         // toasten
-                                        CharSequence text2 = "Die Prüfung konnte nicht gespeichert werden. Geben Sie bitte einen Prüfungsnamen ein.";
+                                        CharSequence text2 = "Die Prüfung konnte nicht gespeichert werden. Berechnen Sie bitte erst das Ergebnis.";
                                         int duration2 = Toast.LENGTH_LONG;
                                         Toast toast2 = Toast.makeText(myContext, text2, duration2);
                                         toast2.show();
@@ -511,12 +785,12 @@ public class ErgebnisseFragment extends ListFragment {
         }
     }
 
-    public boolean updatePunkteSchnittData(DialogWrapper wrapper, int position) {
+    public boolean updatePunkteSchnittData(DialogWrapper wrapper, int position, Schnitte schnittPunkte) {
 
         // values einlesen
         myValues = new ContentValues();
 
-        if (wrapper.getKlausur().isEmpty()) {
+        if (!berechnet) {
             // nothing is saved
             gespeichert = false;
 
@@ -539,8 +813,11 @@ public class ErgebnisseFragment extends ListFragment {
             myValues.put(MyDBHelper.COLUMN_P1, wrapper.getP1());
             myValues.put(MyDBHelper.COLUMN_P0, wrapper.getP0());
 
-            // todo ergebnis fehlt noch!
-
+            // Schnitt speichern
+            myValues.put(MyDBHelper.COLUMN_ANZAHL, schnittPunkte.anzahl);
+            myValues.put(MyDBHelper.COLUMN_SCHNITT_NOTEN, schnittPunkte.schnittNoten);
+            myValues.put(MyDBHelper.COLUMN_SCHNITT_NOTEN, schnittPunkte.schnittPunkte);
+            myValues.put(MyDBHelper.COLUMN_PROZENT_UNGENUEGEND, schnittPunkte.prozentUngenuegend);
 
             // datenbank update aktivität in MainActivity ausführen
             MainActivity.myKlausurUpdate(myValues, position);
@@ -551,12 +828,12 @@ public class ErgebnisseFragment extends ListFragment {
         return gespeichert;
     }
 
-    public boolean updateNotenSchnittData(DialogWrapper wrapper, int position) {
+    public boolean updateNotenSchnittData(DialogWrapper wrapper, int position, Schnitte schnittNoten) {
 
         // values einlesen
         myValues = new ContentValues();
 
-        if (wrapper.getKlausur().isEmpty()) {
+        if (!berechnet) {
             // nothing is saved
             gespeichert = false;
 
@@ -569,8 +846,10 @@ public class ErgebnisseFragment extends ListFragment {
             myValues.put(MyDBHelper.COLUMN_N5, wrapper.getN5());
             myValues.put(MyDBHelper.COLUMN_N6, wrapper.getN6());
 
-            // todo ergebnis fehlt noch!
-
+            // Schnitt speichern
+            myValues.put(MyDBHelper.COLUMN_ANZAHL, schnittNoten.anzahl);
+            myValues.put(MyDBHelper.COLUMN_SCHNITT_NOTEN, schnittNoten.schnittNoten);
+            myValues.put(MyDBHelper.COLUMN_PROZENT_UNGENUEGEND, schnittNoten.prozentUngenuegend);
 
             // datenbank update aktivität in MainActivity ausführen
             MainActivity.myKlausurUpdate(myValues, position);

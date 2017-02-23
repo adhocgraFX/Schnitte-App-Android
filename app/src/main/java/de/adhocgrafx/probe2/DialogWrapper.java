@@ -24,29 +24,29 @@ public class DialogWrapper {
 
     TextView datumFeld = null;
 
-    EditText N1 = null;
-    EditText N2 = null;
-    EditText N3 = null;
-    EditText N4 = null;
-    EditText N5 = null;
-    EditText N6 = null;
+    EditText n1 = null;
+    EditText n2 = null;
+    EditText n3 = null;
+    EditText n4 = null;
+    EditText n5 = null;
+    EditText n6 = null;
 
-    EditText P15 = null;
-    EditText P14 = null;
-    EditText P13 = null;
-    EditText P12 = null;
-    EditText P11 = null;
-    EditText P10 = null;
-    EditText P9 = null;
-    EditText P8 = null;
-    EditText P7 = null;
-    EditText P6 = null;
-    EditText P5 = null;
-    EditText P4 = null;
-    EditText P3 = null;
-    EditText P2 = null;
-    EditText P1 = null;
-    EditText P0 = null;
+    EditText p15 = null;
+    EditText p14 = null;
+    EditText p13 = null;
+    EditText p12 = null;
+    EditText p11 = null;
+    EditText p10 = null;
+    EditText p9 = null;
+    EditText p8 = null;
+    EditText p7 = null;
+    EditText p6 = null;
+    EditText p5 = null;
+    EditText p4 = null;
+    EditText p3 = null;
+    EditText p2 = null;
+    EditText p1 = null;
+    EditText p0 = null;
 
     DialogWrapper(View base) {
         this.base = base;
@@ -133,241 +133,241 @@ public class DialogWrapper {
         return(getN1Feld().getText().toString());
     }
     private EditText getN1Feld() {
-        if (N1 == null) {
-            N1 = (EditText)base.findViewById(R.id.editN1);
+        if (n1 == null) {
+            n1 = (EditText)base.findViewById(R.id.editN1);
         }
 
-        return(N1);
+        return(n1);
     }
 
     public String getN2() {
         return(getN2Feld().getText().toString());
     }
     private EditText getN2Feld() {
-        if (N2 == null) {
-            N2 = (EditText)base.findViewById(R.id.editN2);
+        if (n2 == null) {
+            n2 = (EditText)base.findViewById(R.id.editN2);
         }
 
-        return(N2);
+        return(n2);
     }
 
     public String getN3() {
         return(getN3Feld().getText().toString());
     }
     private EditText getN3Feld() {
-        if (N3 == null) {
-            N3 = (EditText)base.findViewById(R.id.editN3);
+        if (n3 == null) {
+            n3 = (EditText)base.findViewById(R.id.editN3);
         }
 
-        return(N3);
+        return(n3);
     }
 
     public String getN4() {
         return(getN4Feld().getText().toString());
     }
     private EditText getN4Feld() {
-        if (N4 == null) {
-            N4 = (EditText)base.findViewById(R.id.editN4);
+        if (n4 == null) {
+            n4 = (EditText)base.findViewById(R.id.editN4);
         }
 
-        return(N4);
+        return(n4);
     }
 
     public String getN5() {
         return(getN5Feld().getText().toString());
     }
     private EditText getN5Feld() {
-        if (N5 == null) {
-            N5 = (EditText)base.findViewById(R.id.editN5);
+        if (n5 == null) {
+            n5 = (EditText)base.findViewById(R.id.editN5);
         }
 
-        return(N5);
+        return(n5);
     }
 
     public String getN6() {
         return(getN6Feld().getText().toString());
     }
     private EditText getN6Feld() {
-        if (N6 == null) {
-            N6 = (EditText)base.findViewById(R.id.editN6);
+        if (n6 == null) {
+            n6 = (EditText)base.findViewById(R.id.editN6);
         }
 
-        return(N6);
+        return(n6);
     }
 
     public String getP15() {
         return(getP15Feld().getText().toString());
     }
     private EditText getP15Feld() {
-        if (P15 == null) {
-            P15 = (EditText)base.findViewById(R.id.editP15);
+        if (p15 == null) {
+            p15 = (EditText)base.findViewById(R.id.editP15);
         }
 
-        return(P15);
+        return(p15);
     }
 
     public String getP14() {
         return(getP14Feld().getText().toString());
     }
     private EditText getP14Feld() {
-        if (P14 == null) {
-            P14 = (EditText)base.findViewById(R.id.editP14);
+        if (p14 == null) {
+            p14 = (EditText)base.findViewById(R.id.editP14);
         }
 
-        return(P14);
+        return(p14);
     }
 
     public String getP13() {
         return(getP13Feld().getText().toString());
     }
     private EditText getP13Feld() {
-        if (P13 == null) {
-            P13 = (EditText)base.findViewById(R.id.editP13);
+        if (p13 == null) {
+            p13 = (EditText)base.findViewById(R.id.editP13);
         }
 
-        return(P13);
+        return(p13);
     }
 
     public String getP12() {
         return(getP12Feld().getText().toString());
     }
     private EditText getP12Feld() {
-        if (P12 == null) {
-            P12 = (EditText)base.findViewById(R.id.editP12);
+        if (p12 == null) {
+            p12 = (EditText)base.findViewById(R.id.editP12);
         }
 
-        return(P12);
+        return(p12);
     }
 
     public String getP11() {
         return(getP11Feld().getText().toString());
     }
     private EditText getP11Feld() {
-        if (P11 == null) {
-            P11 = (EditText)base.findViewById(R.id.editP11);
+        if (p11 == null) {
+            p11 = (EditText)base.findViewById(R.id.editP11);
         }
 
-        return(P11);
+        return(p11);
     }
 
     public String getP10() {
         return(getP10Feld().getText().toString());
     }
     private EditText getP10Feld() {
-        if (P10 == null) {
-            P10 = (EditText)base.findViewById(R.id.editP10);
+        if (p10 == null) {
+            p10 = (EditText)base.findViewById(R.id.editP10);
         }
 
-        return(P10);
+        return(p10);
     }
 
     public String getP9() {
         return(getP9Feld().getText().toString());
     }
     private EditText getP9Feld() {
-        if (P9 == null) {
-            P9 = (EditText)base.findViewById(R.id.editP9);
+        if (p9 == null) {
+            p9 = (EditText)base.findViewById(R.id.editP9);
         }
 
-        return(P9);
+        return(p9);
     }
 
     public String getP8() {
         return(getP8Feld().getText().toString());
     }
     private EditText getP8Feld() {
-        if (P8 == null) {
-            P8 = (EditText)base.findViewById(R.id.editP8);
+        if (p8 == null) {
+            p8 = (EditText)base.findViewById(R.id.editP8);
         }
 
-        return(P8);
+        return(p8);
     }
 
     public String getP7() {
         return(getP7Feld().getText().toString());
     }
     private EditText getP7Feld() {
-        if (P7 == null) {
-            P7 = (EditText)base.findViewById(R.id.editP7);
+        if (p7 == null) {
+            p7 = (EditText)base.findViewById(R.id.editP7);
         }
 
-        return(P7);
+        return(p7);
     }
 
     public String getP6() {
         return(getP6Feld().getText().toString());
     }
     private EditText getP6Feld() {
-        if (P6 == null) {
-            P6 = (EditText)base.findViewById(R.id.editP6);
+        if (p6 == null) {
+            p6 = (EditText)base.findViewById(R.id.editP6);
         }
 
-        return(P6);
+        return(p6);
     }
 
     public String getP5() {
         return(getP5Feld().getText().toString());
     }
     private EditText getP5Feld() {
-        if (P5 == null) {
-            P5 = (EditText)base.findViewById(R.id.editP5);
+        if (p5 == null) {
+            p5 = (EditText)base.findViewById(R.id.editP5);
         }
 
-        return(P5);
+        return(p5);
     }
 
     public String getP4() {
         return(getP4Feld().getText().toString());
     }
     private EditText getP4Feld() {
-        if (P4 == null) {
-            P4 = (EditText)base.findViewById(R.id.editP4);
+        if (p4 == null) {
+            p4 = (EditText)base.findViewById(R.id.editP4);
         }
 
-        return(P4);
+        return(p4);
     }
 
     public String getP3() {
         return(getP3Feld().getText().toString());
     }
     private EditText getP3Feld() {
-        if (P3 == null) {
-            P3 = (EditText)base.findViewById(R.id.editP3);
+        if (p3 == null) {
+            p3 = (EditText)base.findViewById(R.id.editP3);
         }
 
-        return(P3);
+        return(p3);
     }
 
     public String getP2() {
         return(getP2Feld().getText().toString());
     }
     private EditText getP2Feld() {
-        if (P2 == null) {
-            P2 = (EditText)base.findViewById(R.id.editP2);
+        if (p2 == null) {
+            p2 = (EditText)base.findViewById(R.id.editP2);
         }
 
-        return(P2);
+        return(p2);
     }
 
     public String getP1() {
         return(getP1Feld().getText().toString());
     }
     private EditText getP1Feld() {
-        if (P1 == null) {
-            P1 = (EditText)base.findViewById(R.id.editP1);
+        if (p1 == null) {
+            p1 = (EditText)base.findViewById(R.id.editP1);
         }
 
-        return(P1);
+        return(p1);
     }
 
     public String getP0() {
         return(getP0Feld().getText().toString());
     }
     private EditText getP0Feld() {
-        if (P0 == null) {
-            P0 = (EditText)base.findViewById(R.id.editP0);
+        if (p0 == null) {
+            p0 = (EditText)base.findViewById(R.id.editP0);
         }
 
-        return(P0);
+        return(p0);
     }
 }

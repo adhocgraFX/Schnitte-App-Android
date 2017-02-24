@@ -112,7 +112,7 @@
             android:id="@+id/textErgebnisNoten"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="90dp"
+            android:minHeight="100dp"
             android:layout_marginTop="16dp"
             android:hint="@string/ergebnis"
             android:text=""

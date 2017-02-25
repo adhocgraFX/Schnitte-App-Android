@@ -5,7 +5,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-
 /**
  * Created by Hock on 22.01.2017.
  */
@@ -19,8 +18,6 @@ public class DialogWrapper {
 
     Spinner spKurs = null;
     Spinner spSemester = null;
-    EditText kursFeld = null;
-    EditText semesterFeld = null;
 
     TextView datumFeld = null;
 
@@ -105,28 +102,6 @@ public class DialogWrapper {
         }
 
         return(spSemester);
-    }
-
-    public String getKursText() {
-        return(getKursTextFeld().getText().toString());
-    }
-    private EditText getKursTextFeld() {
-        if (kursFeld == null) {
-            kursFeld = (EditText)base.findViewById(R.id.kursFeld);
-        }
-
-        return(kursFeld);
-    }
-
-    public String getSemesterText() {
-        return(getSemesterTextFeld().getText().toString());
-    }
-    private EditText getSemesterTextFeld() {
-        if (semesterFeld == null) {
-            semesterFeld = (EditText)base.findViewById(R.id.semesterFeld);
-        }
-
-        return(semesterFeld);
     }
 
     public String getN1() {

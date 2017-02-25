@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -249,9 +250,39 @@ public class ErgebnisseFragment extends ListFragment {
         final Activity activity = getActivity();
 
         LayoutInflater myInflater = LayoutInflater.from(myContext);
-        View addView = myInflater.inflate(R.layout.edit_klausur, null);
+        View addView = myInflater.inflate(R.layout.add_klausur, null);
 
         final DialogWrapper editWrapper = new DialogWrapper(addView);
+
+        String defaultKurseValue = "1ku1,1ku2,1ku3,2ku1,2ku2,2ku3";
+        String defaultSemesterValue = "11/1,11/2,12/1,12/2,2016/17";
+
+        // get spinner items from preferences
+        SharedPreferences myPrefs = PreferenceManager.getDefaultSharedPreferences(myContext);
+        String kurse = myPrefs.getString("kurse", defaultKurseValue);
+        String[] kurs_array = kurse.split(",");
+        for (int i = 0; i < kurs_array.length; i++) {
+            kurs_array[i] = kurs_array[i].trim();
+        }
+        String semester = myPrefs.getString("semester", defaultSemesterValue);
+        String[] semester_array = semester.split(",");
+        for (int i = 0; i < semester_array.length; i++) {
+            semester_array[i] = semester_array[i].trim();
+        }
+
+        // add Spinner items
+        final Spinner spinnerKurs = (Spinner) addView.findViewById(R.id.kurs);
+        ArrayAdapter<String> adapterKurs = new ArrayAdapter<String>(myContext, android.R.layout.simple_spinner_item, kurs_array);
+        adapterKurs.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerKurs.setAdapter(adapterKurs);
+        spinnerKurs.setOnItemSelectedListener(new SpinnerActivity());
+
+        final Spinner spinnerSemester = (Spinner) addView.findViewById(R.id.semester);
+        ArrayAdapter<String> adapterSemester = new ArrayAdapter<String>(myContext, android.R.layout.simple_spinner_item, semester_array);
+        adapterSemester.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerSemester.setAdapter(adapterSemester);
+        spinnerSemester.setOnItemSelectedListener(new SpinnerActivity());
+
 
         final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
@@ -290,16 +321,27 @@ public class ErgebnisseFragment extends ListFragment {
         });
 
         EditText klausur_name = (EditText) addView.findViewById(R.id.klausur_name);
-        EditText kurs = (EditText) addView.findViewById(R.id.kursFeld);
-        EditText semester = (EditText) addView.findViewById(R.id.semesterFeld);
         EditText info = (EditText) addView.findViewById(R.id.info);
 
         // set edit texte
         klausur_name.setText(tempklausur.klausurName);
-        kurs.setText(tempklausur.kurs);
-        semester.setText(tempklausur.semester);
         info.setText(tempklausur.info);
         datumText.setText(tempklausur.datum);
+
+        // set values in spinner via adapter
+        for(int i = 0; i < adapterKurs.getCount(); i++) {
+            if(tempklausur.kurs.trim().equals(adapterKurs.getItem(i))){
+                spinnerKurs.setSelection(i);
+                break;
+            }
+        }
+
+        for(int i = 0; i < adapterSemester.getCount(); i++) {
+            if(tempklausur.semester.trim().equals(adapterSemester.getItem(i))){
+                spinnerSemester.setSelection(i);
+                break;
+            }
+        }
 
         new AlertDialog.Builder(myContext)
                 .setTitle(tempklausur.klausurName + " bearbeiten")
@@ -353,8 +395,8 @@ public class ErgebnisseFragment extends ListFragment {
         } else {
             // endgültig speichern
             myValues.put(MyDBHelper.COLUMN_KLAUSURNAME, wrapper.getKlausur());
-            myValues.put(MyDBHelper.COLUMN_KURS, wrapper.getKursText());
-            myValues.put(MyDBHelper.COLUMN_SEMESTER, wrapper.getSemesterText());
+            myValues.put(MyDBHelper.COLUMN_KURS, wrapper.getKurs());
+            myValues.put(MyDBHelper.COLUMN_SEMESTER, wrapper.getSemester());
             myValues.put(MyDBHelper.COLUMN_INFO, wrapper.getInfo());
             myValues.put(MyDBHelper.COLUMN_DATE, wrapper.getDatum());
 

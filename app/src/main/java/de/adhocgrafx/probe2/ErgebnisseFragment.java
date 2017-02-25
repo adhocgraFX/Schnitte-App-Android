@@ -422,7 +422,7 @@ public class ErgebnisseFragment extends ListFragment {
 
         if (tempklausur.mode.equals("klausur")) {
 
-            View addView = myInflater.inflate(R.layout.edit_punkte, null);
+            View addView = myInflater.inflate(R.layout.fragment_punkte, null);
             final DialogWrapper punkteWrapper = new DialogWrapper(addView);
 
             final EditText p15 = (EditText) addView.findViewById(R.id.editP15);
@@ -443,8 +443,13 @@ public class ErgebnisseFragment extends ListFragment {
             final EditText p0 = (EditText) addView.findViewById(R.id.editP0);
 
             final TextView txtPunkteErgebnis = (TextView) addView.findViewById(R.id.textErgebnisPunkte);
-            Button btnPunkteBerechnen = (Button) addView.findViewById(R.id.btnBerechnePunkte);
+            Button btnPunkteBerechnen = (Button) addView.findViewById(R.id.btnBerechnenPunkte);
             Button btnPunkteReset = (Button) addView.findViewById(R.id.btnResetPunkte);
+
+            // btn komplett speichern ausblenden
+            Button btnSpeichern = (Button) addView.findViewById(R.id.btnSpeichernPunkte);
+            btnSpeichern.setVisibility(View.GONE);
+
 
             // set edit texte
             if (tempklausur.p15 != 0) p15.setText(String.valueOf(tempklausur.p15));
@@ -667,7 +672,7 @@ public class ErgebnisseFragment extends ListFragment {
 
         else if (tempklausur.mode.equals("schulaufgabe")) {
 
-            View addView = myInflater.inflate(R.layout.edit_noten, null);
+            View addView = myInflater.inflate(R.layout.fragment_noten, null);
             final DialogWrapper notenWrapper = new DialogWrapper(addView);
 
             final EditText n1 = (EditText) addView.findViewById(R.id.editN1);
@@ -678,8 +683,12 @@ public class ErgebnisseFragment extends ListFragment {
             final EditText n6 = (EditText) addView.findViewById(R.id.editN6);
 
             final TextView txtNotenErgebnis = (TextView) addView.findViewById(R.id.textErgebnisNoten);
-            Button btnNotenBerechnen = (Button) addView.findViewById(R.id.btnBerechneNoten);
+            Button btnNotenBerechnen = (Button) addView.findViewById(R.id.btnBerechnenNoten);
             Button btnNotenReset = (Button) addView.findViewById(btnResetNoten);
+
+            // btn komplett speichern ausblenden
+            Button btnSpeichern = (Button) addView.findViewById(R.id.btnSpeichernNoten);
+            btnSpeichern.setVisibility(View.GONE);
 
             // set edit texte
             if (tempklausur.n1 != 0) n1.setText(String.valueOf(tempklausur.n1));

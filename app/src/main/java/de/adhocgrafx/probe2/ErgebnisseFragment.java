@@ -119,8 +119,8 @@ public class ErgebnisseFragment extends ListFragment {
 
         List<String> klausurEntries = getKlausurenErgebnisse();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_1, klausurEntries);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                R.layout.list_item, R.id.text, klausurEntries);
 
         setListAdapter(adapter);
     }

@@ -11,10 +11,12 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
 import android.support.v7.widget.PopupMenu;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -62,6 +64,10 @@ public class ErgebnisseFragment extends ListFragment  implements View.OnClickLis
     public boolean gespeichert;
     public boolean berechnet;
 
+    static final int EDIT_INFO_ID = 0;
+    static final int EDIT_SCHNITT_ID = 1;
+    static final int DELETE_ID = 2;
+
     public ErgebnisseFragment() {
         // Required empty public constructor
     }
@@ -82,6 +88,9 @@ public class ErgebnisseFragment extends ListFragment  implements View.OnClickLis
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        // set the context menu
+        registerForContextMenu(getListView());
 
         // Set the klausuren ListAdapter
         List<String> klausurEntries = getKlausurenInfo();
@@ -223,6 +232,69 @@ public class ErgebnisseFragment extends ListFragment  implements View.OnClickLis
         popup.show();
     }
     // END_INCLUDE(show_popup)
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add(0, EDIT_INFO_ID, 0, "Info Bearbeiten");
+        menu.add(0, EDIT_SCHNITT_ID, 0, "Schnitt Bearbeiten");
+        menu.add(0, DELETE_ID, 0, "Löschen");
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
+                .getMenuInfo();
+
+        final Context thisContext = getActivity();
+
+        switch (item.getItemId()) {
+
+            case EDIT_INFO_ID:
+                updateKlausur((int) info.id);
+                return true;
+
+            case EDIT_SCHNITT_ID:
+                updateSchnitt((int) info.id);
+                return true;
+
+            case DELETE_ID:
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                builder.setMessage(R.string.delete_message)
+                        .setTitle(R.string.delete_title);
+
+                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // klausur löschen
+                        MainActivity.myKlausurDelete((int) info.id);
+                        // refresh
+                        displayKlausuren();
+                        // toasten
+                        CharSequence text = "Die Prüfung wurde gelöscht.";
+                        int duration = Toast.LENGTH_SHORT;
+                        Toast toast = Toast.makeText(thisContext, text, duration);
+                        toast.show();
+                    }
+                });
+
+                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // cancel
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+
+                dialog.show();
+
+                return true;
+
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
 
     // info dialog
     public void showInfo(int position) {

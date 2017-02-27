@@ -1,35 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<de.adhocgrafx.probe2.ContextListItem
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="?android:attr/listPreferredItemHeightLarge"
-    android:paddingLeft="?android:attr/listPreferredItemPaddingLeft"
-    android:paddingStart="?android:attr/listPreferredItemPaddingLeft"
-    android:paddingRight="?android:attr/listPreferredItemPaddingRight"
-    android:paddingEnd="?android:attr/listPreferredItemPaddingRight"
-    android:background="?android:attr/activatedBackgroundIndicator">
+    android:layout_height="wrap_content"
+    android:background="?android:attr/activatedBackgroundIndicator"
+    android:orientation="horizontal"
+    android:paddingBottom="4dp"
+    android:paddingTop="4dp">
 
     <ImageView
+
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        app:srcCompat="@android:drawable/ic_input_add"
-        android:scaleType="center" />
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/dot_small"
+        android:paddingStart="16dp"
+        android:paddingRight="16dp"
+        android:paddingLeft="16dp"
+        android:paddingEnd="16dp" />
 
     <TextView
         android:id="@+id/text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_weight="1"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall"
-        android:layout_gravity="center_vertical"/>
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <ImageView
-        android:id="@+id/context"
+        android:id="@+id/button_popup"
         style="@style/Widget.AppCompat.Light.ActionButton.Overflow"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:clickable="true"
         android:focusable="false" />
-</de.adhocgrafx.probe2.ContextListItem>
+</LinearLayout>

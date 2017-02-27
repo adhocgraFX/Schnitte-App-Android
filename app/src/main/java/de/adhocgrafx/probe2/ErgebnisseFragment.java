@@ -10,12 +10,11 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ListFragment;
-import android.view.ContextMenu;
+import android.support.v7.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -50,11 +49,11 @@ import static de.adhocgrafx.probe2.Berechnungen.tempungenuegend;
 import static de.adhocgrafx.probe2.Berechnungen.ungenuegend;
 import static de.adhocgrafx.probe2.Berechnungen.ungenuegendBerechnen;
 import static de.adhocgrafx.probe2.MainActivity.formatErgebnis;
-import static de.adhocgrafx.probe2.MainActivity.getKlausurenErgebnisse;
+import static de.adhocgrafx.probe2.MainActivity.getKlausurenInfo;
 import static de.adhocgrafx.probe2.R.id.btnResetNoten;
 import static de.adhocgrafx.probe2.R.id.txtDate;
 
-public class ErgebnisseFragment extends ListFragment {
+public class ErgebnisseFragment extends ListFragment  implements View.OnClickListener {
 
     public ContentValues myValues;
     public Klausur tempklausur = new Klausur();
@@ -62,11 +61,6 @@ public class ErgebnisseFragment extends ListFragment {
     public Schnitte schnittNoten = new Schnitte();
     public boolean gespeichert;
     public boolean berechnet;
-
-    static final int INFO_ID = 0;
-    static final int EDIT_INFO_ID = 1;
-    static final int EDIT_SCHNITT_ID = 2;
-    static final int DELETE_ID = 3;
 
     public ErgebnisseFragment() {
         // Required empty public constructor
@@ -80,6 +74,7 @@ public class ErgebnisseFragment extends ListFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_ergebnisse, container, false);
     }
@@ -88,110 +83,146 @@ public class ErgebnisseFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        registerForContextMenu(getListView());
-
-        displayKlausuren();
+        // Set the klausuren ListAdapter
+        List<String> klausurEntries = getKlausurenInfo();
+        setListAdapter(new PopupAdapter(klausurEntries));
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        // todo ? nötig ?
-        displayKlausuren();
+
+
     }
 
     @Override
     public void onListItemClick(ListView l, View v, final int position, long id) {
 
-        final Context helpContext = getActivity();
+        // info dialog anzeigen
+        showInfo(position);
+    }
 
-        // kleiner hilfetext als toast, via preferences abstellbar
-        SharedPreferences myPrefs = PreferenceManager.getDefaultSharedPreferences(helpContext);
-        Boolean hilfe = myPrefs.getBoolean("switch", true);
-        if (hilfe) {
-            CharSequence text = "Informationen, Bearbeiten und Löschen werden als Kontextmenü angezeigt >> Listeneinträge länger antippen.";
-            int duration = Toast.LENGTH_LONG;
-            Toast toast = Toast.makeText(helpContext, text, duration);
-            toast.show();
-        }
+    @Override
+    public void onClick(final View view) {
+        // We need to post a Runnable to show the popup to make sure that the PopupMenu is
+        // correctly positioned. The reason being that the view may change position before the
+        // PopupMenu is shown.
+        view.post(new Runnable() {
+            @Override
+            public void run() {
+                showPopupMenu(view);
+            }
+        });
     }
 
     public void displayKlausuren() {
 
-        List<String> klausurEntries = getKlausurenErgebnisse();
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                R.layout.list_item, R.id.text, klausurEntries);
-
-        setListAdapter(adapter);
+        // Set the klausuren ListAdapter
+        List<String> klausurEntries = getKlausurenInfo();
+        setListAdapter(new PopupAdapter(klausurEntries));
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        menu.add(0, INFO_ID, 0, "Überblick");
-        menu.add(0, EDIT_INFO_ID, 0, "Info Bearbeiten");
-        menu.add(0, EDIT_SCHNITT_ID, 0, "Schnitt Bearbeiten");
-        menu.add(0, DELETE_ID, 0, "Löschen");
-    }
+    /**
+     * A simple array adapter that creates a list of cheeses.
+     */
+    class PopupAdapter extends ArrayAdapter<String> {
 
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
+        PopupAdapter(List<String> items) {
+            super(getActivity(), R.layout.list_item, R.id.text, items);
+        }
 
-        final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
-                .getMenuInfo();
+        @Override
+        public View getView(int position, View convertView, ViewGroup container) {
 
-        final Context thisContext = getActivity();
+            // Let ArrayAdapter inflate the layout and set the text
+            View view = super.getView(position, convertView, container);
 
-        switch (item.getItemId()) {
+            // BEGIN_INCLUDE(button_popup)
+            // Retrieve the popup button from the inflated view
+            View popupButton = view.findViewById(R.id.button_popup);
 
-            case INFO_ID:
-                showInfo((int) info.id);
-                return true;
+            // Set the item as the button's tag so it can be retrieved later
+            popupButton.setTag(getItem(position));
 
-            case EDIT_INFO_ID:
-                updateKlausur((int) info.id);
-                return true;
+            // Set the fragment instance as the OnClickListener
+            popupButton.setOnClickListener(ErgebnisseFragment.this);
+            // END_INCLUDE(button_popup)
 
-            case EDIT_SCHNITT_ID:
-                updateSchnitt((int) info.id);
-                return true;
-
-            case DELETE_ID:
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-                builder.setMessage(R.string.delete_message)
-                        .setTitle(R.string.delete_title);
-
-                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // klausur löschen
-                        MainActivity.myKlausurDelete((int) info.id);
-                        // refresh
-                        displayKlausuren();
-                        // toasten
-                        CharSequence text = "Die Prüfung wurde gelöscht.";
-                        int duration = Toast.LENGTH_SHORT;
-                        Toast toast = Toast.makeText(thisContext, text, duration);
-                        toast.show();
-                    }
-                });
-
-                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // cancel
-                    }
-                });
-
-                AlertDialog dialog = builder.create();
-
-                dialog.show();
-
-                return true;
-
-            default:
-                return super.onContextItemSelected(item);
+            // Finally return the view to be displayed
+            return view;
         }
     }
+
+    // BEGIN_INCLUDE(show_popup)
+    private void showPopupMenu(View view) {
+
+        final Context thisContext = getActivity();
+        final PopupAdapter adapter = (PopupAdapter) getListAdapter();
+
+        // Retrieve the clicked item from view's tag
+        final String item = (String) view.getTag();
+
+        // Create a PopupMenu, giving it the clicked view for an anchor
+        PopupMenu popup = new PopupMenu(getActivity(), view);
+
+        // Inflate our menu resource into the PopupMenu's Menu
+        popup.getMenuInflater().inflate(R.menu.popup, popup.getMenu());
+
+        // Set a listener so we are notified if a menu item is clicked
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.menu_edit_info:
+                        // edit info action
+                        updateKlausur(adapter.getPosition(item));
+                        return true;
+
+                    case R.id.menu_edit_schnitt:
+                        // edit schnitt action
+                        updateSchnitt(adapter.getPosition(item));
+                        return true;
+
+                    case R.id.menu_delete:
+                        // Remove the item from the adapter
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                        builder.setMessage(R.string.delete_message)
+                                .setTitle(R.string.delete_title);
+
+                        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // klausur löschen
+                                MainActivity.myKlausurDelete(adapter.getPosition(item));
+                                // refresh
+                                adapter.remove(item);
+                                // toasten
+                                CharSequence text = "Die Prüfung wurde gelöscht.";
+                                int duration = Toast.LENGTH_SHORT;
+                                Toast toast = Toast.makeText(thisContext, text, duration);
+                                toast.show();
+                            }
+                        });
+
+                        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // cancel
+                            }
+                        });
+
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+
+                        return true;
+                }
+                return false;
+            }
+        });
+
+        // Finally show the PopupMenu
+        popup.show();
+    }
+    // END_INCLUDE(show_popup)
 
     // info dialog
     public void showInfo(int position) {

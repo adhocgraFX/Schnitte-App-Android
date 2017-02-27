@@ -15,11 +15,4 @@
             android:summary="Hier können die Listen für Schuljahre und Semester bearbeitet werden. Geben Sie die Listeneinträge jeweils durch Kommata getrennt ein."
             android:title="Schuljahre und Semester:" />
     </PreferenceCategory>
-
-    <PreferenceCategory android:title="Ergebnisse">
-    <SwitchPreference
-        android:key="switch"
-        android:summary="Informationen, Bearbeiten und Löschen werden als Kontextmenü angezeigt >> Listeneinträge länger antippen."
-        android:title="Folgenden Hilfetext einblenden:" />
-    </PreferenceCategory>
 </PreferenceScreen>

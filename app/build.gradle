@@ -15,8 +15,8 @@ android {
         applicationId "de.adhocgrafx.probe2"
         minSdkVersion 14
         targetSdkVersion 24
-        versionCode 10
-        versionName "1.09"
+        versionCode 11
+        versionName "2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

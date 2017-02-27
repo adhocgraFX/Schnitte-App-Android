@@ -181,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
                         resetInputPunkte();
                     case 2:
                         // todo liste aktualisieren
+
                 }
             }
         });

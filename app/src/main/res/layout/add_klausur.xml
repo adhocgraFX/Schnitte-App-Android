@@ -19,7 +19,7 @@
             android:layout_weight="1"
             android:ems="10"
             android:hint="Prüfung: obligatorisch"
-            android:inputType="textPersonName" />
+            android:inputType="textCapSentences|textPersonName" />
     </LinearLayout>
 
     <LinearLayout
@@ -35,7 +35,7 @@
             android:layout_weight="1"
             android:ems="10"
             android:hint="Info:"
-            android:inputType="textPersonName" />
+            android:inputType="textCapSentences|textPersonName" />
     </LinearLayout>
 
     <LinearLayout

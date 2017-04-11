@@ -69,16 +69,15 @@ import static java.math.RoundingMode.DOWN;
 public class MainActivity extends AppCompatActivity {
 
     private static SQLiteDatabase myDB;
+    private MyDBHelper myDBHelper;
+
     final Context context = this;
     public Klausur tempPruefung;
     public ContentValues myValues;
     public Button btnSpP, btnSpN;
     public boolean gespeichert;
-    private MyDBHelper myDBHelper;
-
 
     // TODO ON CREATE
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
                         // reset der eingabefelder
                         resetInputNoten();
+
                     case 1:
                         // allgemeiner reset
                         punkteInstanziieren();
@@ -135,9 +135,9 @@ public class MainActivity extends AppCompatActivity {
 
                         // reset der eingabefelder
                         resetInputPunkte();
+
                     case 2:
                         // todo liste aktualisieren
-
                 }
             }
 
@@ -150,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
                     case 1:
 
                     case 2:
-
                 }
 
             }
@@ -169,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
 
                         // reset der eingabefelder
                         resetInputNoten();
+
                     case 1:
                         // allgemeiner reset
                         punkteInstanziieren();
@@ -179,9 +179,9 @@ public class MainActivity extends AppCompatActivity {
 
                         // reset der eingabefelder
                         resetInputPunkte();
+
                     case 2:
                         // todo liste aktualisieren
-
                 }
             }
         });
@@ -196,7 +196,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     // TODO PAGER & TABS
-
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -260,7 +259,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     // TODO LIST & DATABASE ACTIONS
-
     public static List<String> getKlausurenErgebnisse() {
         List<String> tempklausuren = new ArrayList<>();
 

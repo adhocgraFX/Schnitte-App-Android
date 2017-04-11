@@ -55,7 +55,7 @@ import static de.adhocgrafx.probe2.MainActivity.getKlausurenInfo;
 import static de.adhocgrafx.probe2.R.id.btnResetNoten;
 import static de.adhocgrafx.probe2.R.id.txtDate;
 
-public class ErgebnisseFragment extends ListFragment  implements View.OnClickListener {
+public class ErgebnisseFragment extends ListFragment implements View.OnClickListener {
 
     public ContentValues myValues;
     public Klausur tempklausur = new Klausur();
@@ -99,8 +99,6 @@ public class ErgebnisseFragment extends ListFragment  implements View.OnClickLis
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-
-
     }
 
     @Override
@@ -131,7 +129,7 @@ public class ErgebnisseFragment extends ListFragment  implements View.OnClickLis
     }
 
     /**
-     * A simple array adapter that creates a list of cheeses.
+     * A simple array adapter that creates a list.
      */
     class PopupAdapter extends ArrayAdapter<String> {
 

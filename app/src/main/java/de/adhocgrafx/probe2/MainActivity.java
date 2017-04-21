@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
@@ -40,6 +41,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import static android.text.TextUtils.isEmpty;
 import static de.adhocgrafx.probe2.Berechnungen.anzahl;
 import static de.adhocgrafx.probe2.Berechnungen.klausurenAnzahlBerechnen;
 import static de.adhocgrafx.probe2.Berechnungen.noten;
@@ -65,7 +67,6 @@ import static de.adhocgrafx.probe2.R.id.textErgebnisNoten;
 import static de.adhocgrafx.probe2.R.id.textErgebnisPunkte;
 import static java.math.RoundingMode.DOWN;
 
-
 public class MainActivity extends AppCompatActivity {
 
     private static SQLiteDatabase myDB;
@@ -76,6 +77,11 @@ public class MainActivity extends AppCompatActivity {
     public ContentValues myValues;
     public Button btnSpP, btnSpN;
     public boolean gespeichert;
+
+    public int addKlausur = 0;
+    public double addMdl = 0;
+    public double additum = 0;
+    public int addErgebnis = 0;
 
     // TODO ON CREATE
     @Override
@@ -137,7 +143,11 @@ public class MainActivity extends AppCompatActivity {
                         resetInputPunkte();
 
                     case 2:
+                        // ergebnisse fragment
                         // todo liste aktualisieren
+
+                    case 3:
+                        // additum fragment
                 }
             }
 
@@ -150,6 +160,9 @@ public class MainActivity extends AppCompatActivity {
                     case 1:
 
                     case 2:
+
+                    case 3:
+
                 }
 
             }
@@ -182,6 +195,9 @@ public class MainActivity extends AppCompatActivity {
 
                     case 2:
                         // todo liste aktualisieren
+
+                    case 3:
+                        // additum fragment
                 }
             }
         });
@@ -231,6 +247,8 @@ public class MainActivity extends AppCompatActivity {
                     return new PunkteFragment();
                 case 2:
                     return new ErgebnisseFragment();
+                case 3:
+                    return new AdditumFragment();
                 default:
                     return null;
             }
@@ -238,8 +256,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 3 pages.
-            return 3;
+            // Show 4 pages.
+            return 4;
         }
 
         @Override
@@ -251,6 +269,8 @@ public class MainActivity extends AppCompatActivity {
                     return getString(R.string.Punkte);
                 case 2:
                     return getString(R.string.Ergebnisse);
+                case 3:
+                    return "ADDITUM";
                 default:
                     return null;
             }
@@ -1045,7 +1065,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Methode double zahlen auf 2 stellen hinter komma abschneiden, nicht runden
+     * Methode double zahlen auf 2 stellen hinter komma abschneiden,
+     * nicht runden und als String ausgeben
      */
     public static String formatErgebnis(double ergebnis) {
         // double auf 2 stellen hinter komma abschneiden, nicht runden
@@ -1067,4 +1088,172 @@ public class MainActivity extends AppCompatActivity {
         // formatiertes ergebnis ausgeben
         return numberFormat.format(ergebnis);
     }
+
+    /**
+     * Methode double zahl auf 2 stellen hinter komma abschneiden,
+     * nicht runden und als Double ausgeben
+     */
+    public double trimDouble(double value) {
+
+        int temp = (int)(value * 100.0);
+
+        // ergebnis ausgeben
+        return ((double)temp) / 100.0;
+    }
+
+    // INCLUDE Berechnungen zu Additum Semester-Schnitt
+
+    // reset button
+    public void resetAddErgebnis(View view) {
+
+        initAdd();
+    }
+
+    public void initAdd() {
+
+        // Inputs, Ausgabe und Variablen resetten
+        EditText editAddKlausur = (EditText) findViewById(R.id.editAddKlausur);
+        EditText editAddMdl = (EditText) findViewById(R.id.editAddMdl);
+        EditText editAdditum = (EditText) findViewById(R.id.editAdditum);
+        TextView txtAddErgebnis = (TextView) findViewById(R.id.txtAddErgebnis);
+
+        editAddKlausur.setText(null);
+        editAddMdl.setText(null);
+        editAdditum.setText(null);
+        txtAddErgebnis.setText("Ergebnis");
+        txtAddErgebnis.setTextColor(Color.LTGRAY);
+
+        addKlausur = 0;
+        addMdl = 0;
+        additum = 0;
+        addErgebnis = 0;
+    }
+
+    // berechene button
+    public void berechneAddErgebnis(View view) {
+
+        TextView txtAddErgebnis = (TextView) findViewById(R.id.txtAddErgebnis);
+
+        // Werte auslesen
+        getAddValues();
+
+        // Werte testen
+        String message = testAddValues();
+
+        if (isEmpty(message)) {
+
+            addErgebnis = berechneAddSchnitt(addKlausur, addMdl, additum);
+
+            if (addErgebnis < 5) {
+                txtAddErgebnis.setTextColor(Color.parseColor("#e53935"));
+            } else {
+                txtAddErgebnis.setTextColor(Color.parseColor("#303f9f"));
+            }
+
+            String p = " Punkte";
+
+            if (addErgebnis == 1) {
+                p = " Punkt";
+            }
+
+            txtAddErgebnis.setText(addErgebnis + p);
+        }
+
+        else {
+
+            new AlertDialog.Builder(this)
+                    .setTitle("Ungültiger Eintrag")
+                    .setMessage(message)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            if (addKlausur > 15) {
+                                EditText editAddKlausur = (EditText) findViewById(R.id.editAddKlausur);
+                                editAddKlausur.setText(null);
+                            }
+
+                            if (addMdl > 15) {
+                                EditText editAddMdl = (EditText) findViewById(R.id.editAddMdl);
+                                editAddMdl.setText(null);
+                            }
+
+                            if (additum > 15) {
+                                EditText editAdditum = (EditText) findViewById(R.id.editAdditum);
+                                editAdditum.setText(null);
+                            }
+                        }
+                    })
+                    .show();
+        }
+    }
+
+    public void getAddValues() {
+
+        EditText editAddKlausur = (EditText) findViewById(R.id.editAddKlausur);
+        EditText editAddMdl = (EditText) findViewById(R.id.editAddMdl);
+        EditText editAdditum = (EditText) findViewById(R.id.editAdditum);
+
+        try {
+            addKlausur = Integer.parseInt(editAddKlausur.getText().toString());
+        } catch (NumberFormatException e) {
+            addKlausur = 0;
+        }
+
+        try {
+            addMdl = Double.parseDouble(editAddMdl.getText().toString());
+        } catch (NumberFormatException e) {
+            addMdl = 0;
+        }
+
+        try {
+            additum = Double.parseDouble(editAdditum.getText().toString());
+        } catch (NumberFormatException e) {
+            additum = 0;
+        }
+    }
+
+    public String testAddValues() {
+
+        EditText editAddKlausur = (EditText) findViewById(R.id.editAddKlausur);
+        EditText editAddMdl = (EditText) findViewById(R.id.editAddMdl);
+        EditText editAdditum = (EditText) findViewById(R.id.editAdditum);
+
+        String testAddKlausur = editAddKlausur.getEditableText().toString();
+        String testAddMdl = editAddMdl.getEditableText().toString();
+        String testAdditum = editAdditum.getEditableText().toString();
+
+        String errAddKlausur = "";
+        String errAddMdl = "";
+        String errAdditum = "";
+
+        if ((addKlausur > 15) || testAddKlausur.isEmpty()) {
+            errAddKlausur = "Klausur: Trage bitte eine gültige Punktzahl ein.\n";
+        }
+
+        if ((addMdl > 15) || testAddMdl.isEmpty()) {
+            errAddMdl = "Mündlich: Trage bitte eine gültige Punktzahl ein.\n";
+        }
+
+        if ((additum > 15) || testAdditum.isEmpty()) {
+            errAdditum = "Additum: Trage bitte eine gültige Punktzahl ein.\n";
+        }
+
+        return errAddKlausur + errAddMdl + errAdditum;
+    }
+
+    public int berechneAddSchnitt(int addKlausur, double addMdl, double additum) {
+
+        double tmpAddMdl = trimDouble(addMdl);
+
+        double tmpAdditum = trimDouble(additum);
+        double tmpAdditumMal3 = tmpAdditum * 3;
+        int tmpAdditumResult = (int) Math.round(tmpAdditumMal3);
+
+        Double tmpAddErgebnis = ((addKlausur * 2) + tmpAddMdl + tmpAdditumResult) / 6;
+
+        addErgebnis = (int) Math.round(tmpAddErgebnis);
+
+        return addErgebnis;
+    }
+    // Ende ADDITUM
 }

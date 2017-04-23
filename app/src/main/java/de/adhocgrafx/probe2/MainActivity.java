@@ -438,6 +438,7 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        // noinspection SimplifiableIfStatement
         if (id == R.id.change_preferences) {
             startActivity(new Intent(this, ChangePreferences.class));
 
@@ -454,6 +455,30 @@ public class MainActivity extends AppCompatActivity {
 
             new AlertDialog.Builder(this)
                     .setTitle(R.string.app_name)
+                    .setView(addView)
+
+                    .setPositiveButton(R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int whichButton) {
+                                    // Nothing to do here
+                                }
+                            })
+                    .show();
+
+            return true;
+        }
+
+        // noinspection SimplifiableIfStatement
+        if (id == R.id.action_info_additum) {
+            // custom about dialog
+            LayoutInflater myInflater = LayoutInflater.from(this);
+            View addView = myInflater.inflate(R.layout.additum_dialog, null);
+
+            final Activity activity = this;
+
+            new AlertDialog.Builder(this)
+                    .setTitle("Additum")
                     .setView(addView)
 
                     .setPositiveButton(R.string.ok,

@@ -9,8 +9,6 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ListFragment;
-import android.support.v7.widget.PopupMenu;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -25,6 +23,9 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.widget.PopupMenu;
+import androidx.fragment.app.ListFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

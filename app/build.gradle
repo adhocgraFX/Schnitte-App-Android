@@ -9,15 +9,15 @@ android {
             storePassword 'Pablo=Inka?1233'
         }
     }
-    compileSdkVersion 24
-    buildToolsVersion '25.0.0'
+    compileSdkVersion 29
+    buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "de.adhocgrafx.probe2"
         minSdkVersion 14
-        targetSdkVersion 24
-        versionCode 11
-        versionName "2.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        targetSdkVersion 29
+        versionCode 13
+        versionName "2.2"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {
         release {
@@ -29,11 +29,11 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:design:24.2.1'
-    testCompile 'junit:junit:4.12'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    // Adds a remote binary dependency only for the instrumented test APK.
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.0'
+    // Adds a remote binary dependency only for local tests.
+    testImplementation 'junit:junit:4.12'
 }
